@@ -1,0 +1,3620 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reading Challenge</title>
+<style>
+:root{color-scheme:light dark;--bg:#fff;--surface:#f7f7f5;--surface2:#fbfbfa;--text:#2c2c2b;--muted:#787774;--border:#e6e5e3;--hover:#f1f1ef;--green:#46a171;--yellow:#d6a94f;--gray:#9b9a97}
+*{box-sizing:border-box}html,body{margin:0;background:transparent;color:var(--text);font-family:Georgia,"Times New Roman",Times,serif}body{padding:2px;font-size:14px;line-height:1.45}.dashboard{width:100%}.topbar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.title{font-size:16px;font-weight:650;letter-spacing:-.01em}.years{display:flex;gap:2px;flex-wrap:nowrap}.year-btn{appearance:none;border:1px solid transparent;background:transparent;color:var(--muted);border-radius:6px;min-height:30px;padding:4px 5px;font:inherit;font-size:14px;font-weight:550;white-space:nowrap;cursor:pointer}.year-btn:hover{background:var(--hover);color:var(--text)}.year-btn[aria-pressed="true"]{background:var(--surface);border-color:var(--border);color:var(--text)}.year-btn:focus-visible,.row-link:focus-visible{outline:2px solid #2783de;outline-offset:2px}.progress-card{margin-bottom:12px;padding:0;border:0;border-radius:0;background:transparent}.progress-summary{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:8px}.progress-summary strong{font-size:13px;font-weight:650}.progress-summary span{color:var(--muted);font-size:12px}.progress-track{height:10px;overflow:hidden;border-radius:5px;background:var(--border)}.progress-fill{height:100%;width:0;border-radius:inherit;background:var(--green);transition:width .25s ease}.chart-block{display:grid;grid-template-columns:minmax(190px,1fr) minmax(170px,.9fr);align-items:center;gap:20px;padding:18px;border:0;border-radius:10px;background:var(--surface2)}.donut-wrap{position:relative;width:min(250px,100%);aspect-ratio:1;margin:auto}.donut{width:100%;height:100%;transform:rotate(-90deg);overflow:visible}.donut circle{fill:none;stroke-width:17}.track{stroke:var(--border)}.segment{transition:opacity .15s ease}.donut-wrap:hover .segment{opacity:.94}.center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;pointer-events:none}.center strong{font-size:25px;line-height:1;font-weight:700;letter-spacing:-.025em}.center span{margin-top:6px;color:var(--muted);font-size:13px}.legend{display:grid;gap:8px}.legend-row{display:grid;grid-template-columns:10px 1fr auto;gap:9px;align-items:center;min-height:24px}.dot{width:9px;height:9px;border-radius:2px}.legend-name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.legend-value{color:var(--muted);font-variant-numeric:tabular-nums}.section-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:40px 2px 8px}.section-head h2{font-size:15px;margin:0;font-weight:650}.section-head span{color:var(--muted);font-size:13px}.list{border-top:1px solid var(--border)}.row{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:center;min-height:44px;border-bottom:1px solid var(--border);padding:6px 4px}.num{color:var(--muted);font-variant-numeric:tabular-nums;text-align:center}.row-link{color:var(--text);text-decoration:none;min-width:0}.row-link:hover{text-decoration:underline}.book-title{font-weight:520;white-space:normal;overflow:visible;overflow-wrap:anywhere}.book-meta{font-size:12px;color:var(--muted);white-space:normal;overflow:visible;overflow-wrap:anywhere;margin-top:1px}.status{font-size:12px;padding:3px 8px;border-radius:5px;background:var(--surface);color:var(--muted);white-space:nowrap}.status.read{background:#e8f1ec;color:#2f7652}.status.reading{background:#fbebde;color:#9b612f}.empty{padding:28px 8px;color:var(--muted);text-align:center}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:560px){body{font-size:14px}.topbar{align-items:flex-start;flex-direction:column;gap:6px}.years{width:100%}.year-btn{flex:1;min-width:0;padding:4px 2px;font-size:13px}.chart-block{grid-template-columns:1fr;padding:14px}.donut-wrap{width:min(220px,82vw)}.legend{grid-template-columns:1fr 1fr;column-gap:14px}.center strong{font-size:24px}.row{grid-template-columns:34px minmax(0,1fr)}.book-meta{display:none}}
+@media(prefers-color-scheme:dark){:root{--bg:#191919;--surface:#252525;--surface2:#202020;--text:#fff;--muted:rgba(255,255,255,.65);--border:rgba(255,255,255,.16);--hover:#30302f;--green:#72bc8f;--yellow:#de9255;--gray:#a5a5a2}.status.read{background:rgba(114,188,143,.12);color:#8fd0a7}.status.reading{background:rgba(222,146,85,.12);color:#e5aa79}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main class="dashboard" aria-labelledby="dashboard-title">
+  <div class="topbar">
+    <div class="title" id="dashboard-title">Reading Challenge</div>
+    <div class="years" id="years" role="group" aria-label="Choose a year"></div>
+  </div>
+  <section class="progress-card" aria-labelledby="progress-summary-label">
+    <div class="progress-summary"><strong id="progress-percent">0%</strong><span id="progress-summary-label">0 of 0 books</span></div>
+    <div class="progress-track" role="img" id="progress-bar" aria-label="Reading goal progress: 0%"><div class="progress-fill" id="progress-fill"></div></div>
+  </section>
+  <section class="chart-block" aria-labelledby="chart-label">
+    <div class="donut-wrap">
+      <svg class="donut" viewBox="0 0 120 120" role="img" id="donut" aria-labelledby="chart-label chart-desc"><circle class="track" cx="60" cy="60" r="46"></circle><g id="segments"></g></svg>
+      <div class="center"><strong id="progress">0/0</strong><span id="progress-label">books read</span></div>
+      <p class="sr-only" id="chart-desc"></p>
+    </div>
+    <div><div class="sr-only" id="chart-label">Challenge genre breakdown</div><div class="legend" id="legend"></div></div>
+  </section>
+  <div class="section-head"><h2 id="list-title">2026 Read List</h2><span id="book-count"></span></div>
+  <section class="list" id="list" aria-labelledby="list-title"></section>
+</main>
+<script>
+const DATA={
+  "years": [
+    {
+      "id": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "label": "< 2023",
+      "goal": 50,
+      "read": 91,
+      "total": 101
+    },
+    {
+      "id": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "label": "2026",
+      "goal": 55,
+      "read": 33,
+      "total": 48
+    },
+    {
+      "id": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "label": "2025",
+      "goal": 50,
+      "read": 49,
+      "total": 52
+    },
+    {
+      "id": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "label": "2024",
+      "goal": 50,
+      "read": 41,
+      "total": 52
+    }
+  ],
+  "books": [
+    {
+      "id": "3ce8a53c-3854-8067-b43a-e713ee8c8fa8",
+      "url": "https://app.notion.com/p/Belladonna-3ce8a53c38548067b43ae713ee8c8fa8",
+      "title": "Belladonna",
+      "author": "",
+      "status": "Unread",
+      "number": 48,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Uncategorized"
+      ]
+    },
+    {
+      "id": "3c98a53c-3854-809b-bba8-f550da93ccd8",
+      "url": "https://app.notion.com/p/Mysteries-of-Thorn-Manor-3c98a53c3854809bbba8f550da93ccd8",
+      "title": "Mysteries of Thorn Manor",
+      "author": "",
+      "status": "Read",
+      "number": 47,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Uncategorized"
+      ]
+    },
+    {
+      "id": "3c98a53c-3854-801a-a1a2-ce7508a65b6b",
+      "url": "https://app.notion.com/p/Sorcery-of-Thorns-3c98a53c3854801aa1a2ce7508a65b6b",
+      "title": "Sorcery of Thorns",
+      "author": "M.A. Carrick",
+      "status": "Read",
+      "number": 45,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Uncategorized"
+      ]
+    },
+    {
+      "id": "3c98a53c-3854-80f7-b62b-efb36c6d5389",
+      "url": "https://app.notion.com/p/A-Drop-of-Corruption-3c98a53c385480f7b62befb36c6d5389",
+      "title": "A Drop of Corruption",
+      "author": "",
+      "status": "Reading",
+      "number": 44,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Uncategorized"
+      ]
+    },
+    {
+      "id": "3c98a53c-3854-8008-b4dd-c52dd94f92c7",
+      "url": "https://app.notion.com/p/Horns-3c98a53c38548008b4ddc52dd94f92c7",
+      "title": "Horns",
+      "author": "Joe Hill",
+      "status": "Unread",
+      "number": 46,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy",
+        "Horror"
+      ]
+    },
+    {
+      "id": "3b48a53c-3854-8099-ab88-fffa346aabe8",
+      "url": "https://app.notion.com/p/The-Wolf-and-the-Woodsman-3b48a53c38548099ab88fffa346aabe8",
+      "title": "The Wolf and the Woodsman",
+      "author": "Ava Reid",
+      "status": "Reading",
+      "number": 43,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Uncategorized"
+      ]
+    },
+    {
+      "id": "3b28a53c-3854-803e-a0c7-fb810d40929a",
+      "url": "https://app.notion.com/p/The-Tainted-Cup-3b28a53c3854803ea0c7fb810d40929a",
+      "title": "The Tainted Cup",
+      "author": "",
+      "status": "Read",
+      "number": 42,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Uncategorized"
+      ]
+    },
+    {
+      "id": "3ab8a53c-3854-80e9-a7dc-d513b576e9bb",
+      "url": "https://app.notion.com/p/A-Study-in-Drowning-3ab8a53c385480e9a7dcd513b576e9bb",
+      "title": "A Study in Drowning",
+      "author": "David James",
+      "status": "Read",
+      "number": 41,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Uncategorized"
+      ]
+    },
+    {
+      "id": "3ab8a53c-3854-8037-b91a-ed1fdfcf14f3",
+      "url": "https://app.notion.com/p/Emily-Wilde-s-Map-of-the-Other-World-3ab8a53c38548037b91aed1fdfcf14f3",
+      "title": "Emily Wilde’s Map of the Other World",
+      "author": "Emily Wilde",
+      "status": "Read",
+      "number": 40,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy",
+        "Historical Fiction"
+      ]
+    },
+    {
+      "id": "39e8a53c-3854-80fe-a5f8-d3056a0d64be",
+      "url": "https://app.notion.com/p/Emily-Wilde-s-Encyclopaedia-of-Faeries-39e8a53c385480fea5f8d3056a0d64be",
+      "title": "Emily Wilde's Encyclopaedia of Faeries",
+      "author": "Heather Fawcett",
+      "status": "Read",
+      "number": 39,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy",
+        "Historical Fiction"
+      ]
+    },
+    {
+      "id": "3998a53c-3854-80b0-9f2e-d110f67c0ee2",
+      "url": "https://app.notion.com/p/Arcana-Academy-3998a53c385480b09f2ed110f67c0ee2",
+      "title": "Arcana Academy",
+      "author": "Elise Kova",
+      "status": "Reading",
+      "number": 38,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Uncategorized"
+      ]
+    },
+    {
+      "id": "3998a53c-3854-8041-855f-f4e14b88fd44",
+      "url": "https://app.notion.com/p/Book-of-Night-3998a53c38548041855ff4e14b88fd44",
+      "title": "Book of Night",
+      "author": "Holly Black",
+      "status": "Reading",
+      "number": 37,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "3998a53c-3854-8021-81d2-db7bdecf6e3b",
+      "url": "https://app.notion.com/p/The-Sunbearer-Trials-3998a53c3854802181d2db7bdecf6e3b",
+      "title": "The Sunbearer Trials",
+      "author": "Aiden Thomas",
+      "status": "Reading",
+      "number": 36,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "37e8a53c-3854-8063-8038-fb00e07cfe0e",
+      "url": "https://app.notion.com/p/Rites-of-the-Starling-37e8a53c385480638038fb00e07cfe0e",
+      "title": "Rites of the Starling",
+      "author": "Devney Perry",
+      "status": "Read",
+      "number": 35,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "37b8a53c-3854-801a-a8f5-dce1117106a4",
+      "url": "https://app.notion.com/p/Shield-of-Sparrows-37b8a53c3854801aa8f5dce1117106a4",
+      "title": "Shield of Sparrows",
+      "author": "Devney Perry",
+      "status": "Read",
+      "number": 33,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "3738a53c-3854-80db-a3d9-dd9d848c3dd2",
+      "url": "https://app.notion.com/p/Starside-3738a53c385480dba3d9dd9d848c3dd2",
+      "title": "Starside",
+      "author": "Alex Aster",
+      "status": "Read",
+      "number": 32,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "3708a53c-3854-807c-8ae8-d609771d60cc",
+      "url": "https://app.notion.com/p/Lightlark-3708a53c3854807c8ae8d609771d60cc",
+      "title": "Lightlark",
+      "author": "Alex Aster",
+      "status": "Read",
+      "number": 31,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "36e8a53c-3854-8020-865d-cc65603b839a",
+      "url": "https://app.notion.com/p/Crowntide-36e8a53c38548020865dcc65603b839a",
+      "title": "Crowntide",
+      "author": "Alex Aster",
+      "status": "Read",
+      "number": 30,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "36d8a53c-3854-805d-b134-e00715306d0b",
+      "url": "https://app.notion.com/p/Skyshade-36d8a53c3854805db134e00715306d0b",
+      "title": "Skyshade",
+      "author": "Alex Aster",
+      "status": "Read",
+      "number": 29,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "36d8a53c-3854-80fe-a1b7-f99fcf48758a",
+      "url": "https://app.notion.com/p/Nightbane-36d8a53c385480fea1b7f99fcf48758a",
+      "title": "Nightbane",
+      "author": "Alex Aster",
+      "status": "Read",
+      "number": 28,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "36d8a53c-3854-806c-9389-c7fc1ef88588",
+      "url": "https://app.notion.com/p/Most-Delicious-Poison-The-Story-of-Nature-s-Toxins-From-Spices-to-Vices-36d8a53c3854806c9389c7fc1ef88588",
+      "title": "Most Delicious Poison: The Story of Nature's Toxins―From Spices to Vices",
+      "author": "Noah Whiteman",
+      "status": "Reading",
+      "number": 14,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Biography/Memoir",
+        "Survival & Tactics",
+        "Science & Technology"
+      ]
+    },
+    {
+      "id": "3688a53c-3854-80d3-841f-f824ec26b337",
+      "url": "https://app.notion.com/p/Lightlark-3688a53c385480d3841ff824ec26b337",
+      "title": "Lightlark",
+      "author": "Alex Aster",
+      "status": "Read",
+      "number": 27,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "3688a53c-3854-8012-ac3b-ecf35674d6f4",
+      "url": "https://app.notion.com/p/She-Who-Became-the-Sun-3688a53c38548012ac3becf35674d6f4",
+      "title": "She Who Became the Sun",
+      "author": "Shelley Parker-Chan",
+      "status": "DNF",
+      "number": 26,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Historical Fiction"
+      ]
+    },
+    {
+      "id": "3638a53c-3854-80de-b5e0-f42f3fc2bf6a",
+      "url": "https://app.notion.com/p/Daughter-of-the-Moon-Goddess-3638a53c385480deb5e0f42f3fc2bf6a",
+      "title": "Daughter of the Moon Goddess",
+      "author": "Sue Lynn Tan",
+      "status": "DNF",
+      "number": 25,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "35f8a53c-3854-80af-8157-e752dad7c96c",
+      "url": "https://app.notion.com/p/Daughter-of-the-Moon-Goddess-35f8a53c385480af8157e752dad7c96c",
+      "title": "Daughter of the Moon Goddess",
+      "author": "Sue Lynn Tan",
+      "status": "Read",
+      "number": 24,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "35e8a53c-3854-80a6-bd92-fb59ac80f0d3",
+      "url": "https://app.notion.com/p/A-Song-to-Drown-Rivers-35e8a53c385480a6bd92fb59ac80f0d3",
+      "title": "A Song to Drown Rivers",
+      "author": "Ann Liang",
+      "status": "Read",
+      "number": 23,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Romance",
+        "Historical Fiction"
+      ]
+    },
+    {
+      "id": "35e8a53c-3854-80ce-b248-f4e281e5729a",
+      "url": "https://app.notion.com/p/Sword-Catcher-35e8a53c385480ceb248f4e281e5729a",
+      "title": "Sword Catcher",
+      "author": "Cassandra Clare",
+      "status": "Reading",
+      "number": 22,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "35d8a53c-3854-80eb-a41c-c1bb83a23f27",
+      "url": "https://app.notion.com/p/A-Curse-Carved-in-Bone-35d8a53c385480eba41cc1bb83a23f27",
+      "title": "A Curse Carved in Bone",
+      "author": "Danielle L. Jensen",
+      "status": "Read",
+      "number": 21,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy",
+        "Romance",
+        "Historical Fiction"
+      ]
+    },
+    {
+      "id": "3528a53c-3854-804c-ae74-d532f5f826ad",
+      "url": "https://app.notion.com/p/Glass-Sword-3528a53c3854804cae74d532f5f826ad",
+      "title": "Glass Sword",
+      "author": "Victoria Aveyard",
+      "status": "Read",
+      "number": 19,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "3508a53c-3854-8019-8811-eb7031d830fd",
+      "url": "https://app.notion.com/p/The-Call-of-the-Wild-3508a53c385480198811eb7031d830fd",
+      "title": "The Call of the Wild",
+      "author": "Jack London",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Classical Literature"
+      ]
+    },
+    {
+      "id": "3508a53c-3854-802a-85ce-c88ef1940e9a",
+      "url": "https://app.notion.com/p/Esperanza-Rising-3508a53c3854802a85cec88ef1940e9a",
+      "title": "Esperanza Rising",
+      "author": "Pam Muñoz Ryan",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Historical Fiction"
+      ]
+    },
+    {
+      "id": "3508a53c-3854-80bb-8acb-ff645feda4d2",
+      "url": "https://app.notion.com/p/Holes-3508a53c385480bb8acbff645feda4d2",
+      "title": "Holes",
+      "author": "Louis Sachar",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Mystery & Thriller"
+      ]
+    },
+    {
+      "id": "3498a53c-3854-80b0-b31e-cd03630b7bd4",
+      "url": "https://app.notion.com/p/Red-Queen-Re-read-3498a53c385480b0b31ecd03630b7bd4",
+      "title": "Red Queen (Re-read)",
+      "author": "Victoria Aveyard",
+      "status": "Read",
+      "number": 18,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "3428a53c-3854-800c-aaab-d8ace77ff0dc",
+      "url": "https://app.notion.com/p/The-Bone-Shard-War-3428a53c3854800caaabd8ace77ff0dc",
+      "title": "The Bone Shard War",
+      "author": "Andrea Stewart",
+      "status": "Read",
+      "number": 17,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "3428a53c-3854-8084-a9fa-e8c992faf2a2",
+      "url": "https://app.notion.com/p/The-Bone-Shard-Emperor-3428a53c38548084a9fae8c992faf2a2",
+      "title": "The Bone Shard Emperor",
+      "author": "Andrea Stewart",
+      "status": "Read",
+      "number": 16,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "3368a53c-3854-805a-a910-c20c0438141f",
+      "url": "https://app.notion.com/p/The-Bone-Shard-Daughter-3368a53c3854805aa910c20c0438141f",
+      "title": "The Bone Shard Daughter",
+      "author": "Andrea Stewart",
+      "status": "Read",
+      "number": 15,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "3368a53c-3854-80f0-909f-f769eaa72478",
+      "url": "https://app.notion.com/p/What-Moves-the-Dead-3368a53c385480f0909ff769eaa72478",
+      "title": "What Moves the Dead",
+      "author": "T. Kingfisher",
+      "status": "Read",
+      "number": 13,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Horror"
+      ]
+    },
+    {
+      "id": "32f8a53c-3854-800c-9f73-d1460e5b257f",
+      "url": "https://app.notion.com/p/Iron-Flame-Re-read-32f8a53c3854800c9f73d1460e5b257f",
+      "title": "Iron Flame (Re-read)",
+      "author": "Rebecca Yarros",
+      "status": "DNF",
+      "number": 12,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "3218a53c-3854-8058-a39c-ebb5b45d20aa",
+      "url": "https://app.notion.com/p/Fourth-Wing-Re-read-3218a53c38548058a39cebb5b45d20aa",
+      "title": "Fourth Wing (Re-read)",
+      "author": "Rebecca Yarros",
+      "status": "Read",
+      "number": 11,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "3218a53c-3854-8054-b70a-d8085369ae14",
+      "url": "https://app.notion.com/p/One-Dark-Window-Re-read-3218a53c38548054b70ad8085369ae14",
+      "title": "One Dark Window (Re-read)",
+      "author": "Rachel Gillig",
+      "status": "Read",
+      "number": 10,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "31e8a53c-3854-80fb-8d2f-d5e991ee418a",
+      "url": "https://app.notion.com/p/Dreamland-The-True-Tale-of-America-s-Opiate-Epidemic-31e8a53c385480fb8d2fd5e991ee418a",
+      "title": "Dreamland: The True Tale of America's Opiate Epidemic",
+      "author": "Sam Quinones",
+      "status": "DNF",
+      "number": 5,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Uncategorized"
+      ]
+    },
+    {
+      "id": "3188a53c-3854-80ac-ab62-e4cdc04529bd",
+      "url": "https://app.notion.com/p/Two-Twisted-Crowns-3188a53c385480acab62e4cdc04529bd",
+      "title": "Two Twisted Crowns",
+      "author": "Rachel Gillig",
+      "status": "Read",
+      "number": 9,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "30f8a53c-3854-80b3-ab00-e8721c49b407",
+      "url": "https://app.notion.com/p/The-Knight-and-the-Moth-30f8a53c385480b3ab00e8721c49b407",
+      "title": "The Knight and the Moth",
+      "author": "Rachel Gillig",
+      "status": "Read",
+      "number": 7,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2ec8a53c-3854-80dc-8825-d09ef0c7babc",
+      "url": "https://app.notion.com/p/Crooked-Kingdom-2ec8a53c385480dc8825d09ef0c7babc",
+      "title": "Crooked Kingdom",
+      "author": "Leigh Bardugo",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2ec8a53c-3854-80a4-85a8-c38bb352e128",
+      "url": "https://app.notion.com/p/Black-Witch-Re-read-2ec8a53c385480a485a8c38bb352e128",
+      "title": "Black Witch (Re-read)",
+      "author": "Laurie Forest",
+      "status": "Read",
+      "number": 51,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2ec8a53c-3854-804d-acd5-ea75b5fcf8d9",
+      "url": "https://app.notion.com/p/The-Scarlet-Princess-Re-Read-2ec8a53c3854804dacd5ea75b5fcf8d9",
+      "title": "The Scarlet Princess (Re-Read)",
+      "author": "Robin D. Mahle",
+      "status": "Read",
+      "number": 45,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2ea8a53c-3854-8019-bfe3-df4cee4ce825",
+      "url": "https://app.notion.com/p/Dryad-Storm-Re-read-2ea8a53c38548019bfe3df4cee4ce825",
+      "title": "Dryad Storm (Re-read)",
+      "author": "Laurie Forest",
+      "status": "Read",
+      "number": 4,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2ea8a53c-3854-80b1-ad38-ead4fc3aee0c",
+      "url": "https://app.notion.com/p/Demon-Tide-Re-read-2ea8a53c385480b1ad38ead4fc3aee0c",
+      "title": "Demon Tide (Re-read)",
+      "author": "Laurie Forest",
+      "status": "Read",
+      "number": 3,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "2ea8a53c-3854-8090-ae23-ff1685091aee",
+      "url": "https://app.notion.com/p/Shadow-Wand-Re-read-2ea8a53c38548090ae23ff1685091aee",
+      "title": "Shadow Wand (Re-read)",
+      "author": "Laurie Forest",
+      "status": "Read",
+      "number": 2,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2ea8a53c-3854-8072-b06f-d68cc446604a",
+      "url": "https://app.notion.com/p/Iron-Flower-Re-read-2ea8a53c38548072b06fd68cc446604a",
+      "title": "Iron Flower (Re-read)",
+      "author": "Laurie Forest",
+      "status": "Read",
+      "number": 1,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2ea8a53c-3854-80a5-8769-f4239b4e0315",
+      "url": "https://app.notion.com/p/Crimson-Kingdom-Re-read-2ea8a53c385480a58769f4239b4e0315",
+      "title": "Crimson Kingdom (Re-read)",
+      "author": "Robin D. Mahle",
+      "status": "Read",
+      "number": 47,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2ea8a53c-3854-8031-9065-ed4840a3415a",
+      "url": "https://app.notion.com/p/From-Broken-Glass-2ea8a53c385480319065ed4840a3415a",
+      "title": "From Broken Glass",
+      "author": "Steven Ross",
+      "status": "DNF",
+      "number": 50,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Biography/Memoir"
+      ]
+    },
+    {
+      "id": "2cd8a53c-3854-8012-8c55-e0f99a4aac57",
+      "url": "https://app.notion.com/p/Diary-of-a-Young-Girl-2cd8a53c385480128c55e0f99a4aac57",
+      "title": "Diary of a Young Girl",
+      "author": "Anne Frank",
+      "status": "Read",
+      "number": 49,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Classical Literature",
+        "Biography/Memoir",
+        "History & Politics"
+      ]
+    },
+    {
+      "id": "2c88a53c-3854-80e5-bd4d-ca48314bde13",
+      "url": "https://app.notion.com/p/Obsidian-Throne-Re-read-2c88a53c385480e5bd4dca48314bde13",
+      "title": "Obsidian Throne  (Re-read)",
+      "author": "Robin D. Mahle",
+      "status": "Read",
+      "number": 48,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2c28a53c-3854-806f-ad2e-d60128beff64",
+      "url": "https://app.notion.com/p/The-Outsiders-2c28a53c3854806fad2ed60128beff64",
+      "title": "The Outsiders",
+      "author": "S.E. Hinton",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Mystery & Thriller",
+        "Classical Literature"
+      ]
+    },
+    {
+      "id": "2c18a53c-3854-80cf-984f-ecfa29bac3f0",
+      "url": "https://app.notion.com/p/Tarnished-Crown-Re-read-2c18a53c385480cf984fecfa29bac3f0",
+      "title": "Tarnished Crown (Re-read)",
+      "author": "Robin D. Mahle",
+      "status": "Read",
+      "number": 46,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2b78a53c-3854-8026-a2f7-faecfc60eaf1",
+      "url": "https://app.notion.com/p/Tender-is-the-Flesh-2b78a53c38548026a2f7faecfc60eaf1",
+      "title": "Tender is the Flesh",
+      "author": "Agustina Bazterrica",
+      "status": "DNF",
+      "number": 39,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Horror",
+        "Dystopian",
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-80c1-b0ae-f74e2ca91032",
+      "url": "https://app.notion.com/p/Unwholly-2b68a53c385480c1b0aef74e2ca91032",
+      "title": "Unwholly",
+      "author": "Neal Shusterson",
+      "status": "Read",
+      "number": 33,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-8044-aa28-d9bb5663f143",
+      "url": "https://app.notion.com/p/The-Chronicles-of-Chrestomanci-2b68a53c38548044aa28d9bb5663f143",
+      "title": "The Chronicles of Chrestomanci",
+      "author": "Diana Wynne Jones",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-80da-9563-f64833baa21f",
+      "url": "https://app.notion.com/p/The-Fault-in-Our-Stars-2b68a53c385480da9563f64833baa21f",
+      "title": "The Fault in Our Stars",
+      "author": "John Green",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-8070-95b2-f25d42775636",
+      "url": "https://app.notion.com/p/Animal-Farm-2b68a53c3854807095b2f25d42775636",
+      "title": "Animal Farm",
+      "author": "George Orwell",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Classical Literature",
+        "Dystopian"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-80d5-85b3-d1e31d856bfe",
+      "url": "https://app.notion.com/p/Happily-Ever-After-2b68a53c385480d585b3d1e31d856bfe",
+      "title": "Happily Ever After",
+      "author": "Kiera Cass",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Dystopian",
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-8085-8b64-f8e8e7f9abdd",
+      "url": "https://app.notion.com/p/The-Bad-Beginning-2b68a53c385480858b64f8e8e7f9abdd",
+      "title": "The Bad Beginning",
+      "author": "Lemony Snicket",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Mystery & Thriller"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-8002-82c8-fec8cc626145",
+      "url": "https://app.notion.com/p/The-Crown-2b68a53c3854800282c8fec8cc626145",
+      "title": "The Crown",
+      "author": "Kiera Cass",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Dystopian",
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-8058-8e98-fa12d6e16fc4",
+      "url": "https://app.notion.com/p/The-Heir-2b68a53c385480588e98fa12d6e16fc4",
+      "title": "The Heir",
+      "author": "Kiera Cass",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy",
+        "Dystopian"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-806a-a8d8-d05d92792b89",
+      "url": "https://app.notion.com/p/The-People-of-Sparks-2b68a53c3854806aa8d8d05d92792b89",
+      "title": "The People of Sparks",
+      "author": "Jeanne DuPrau",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy",
+        "Dystopian"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-80b5-b6da-e9b44ac5d9c1",
+      "url": "https://app.notion.com/p/The-Knife-of-Never-Letting-Go-2b68a53c385480b5b6dae9b44ac5d9c1",
+      "title": "The Knife of Never Letting Go",
+      "author": "Patrick Ness",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Dystopian",
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-809f-a153-e8368e4f641a",
+      "url": "https://app.notion.com/p/The-City-of-Ember-2b68a53c3854809fa153e8368e4f641a",
+      "title": "The City of Ember",
+      "author": "Jeanne DuPrau",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Dystopian",
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-8029-b3ac-ccf0fcdae138",
+      "url": "https://app.notion.com/p/The-One-2b68a53c38548029b3acccf0fcdae138",
+      "title": "The One",
+      "author": "Kiera Cass",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Dystopian",
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-805f-837a-e158b1061a14",
+      "url": "https://app.notion.com/p/The-Elite-2b68a53c3854805f837ae158b1061a14",
+      "title": "The Elite",
+      "author": "Kiera Cass",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy",
+        "Dystopian"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-807d-ad26-c15cf48a3258",
+      "url": "https://app.notion.com/p/The-Selection-2b68a53c3854807dad26c15cf48a3258",
+      "title": "The Selection",
+      "author": "Kiera Cass",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy",
+        "Dystopian",
+        "Romance"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-802f-b77d-f9aaba20fec1",
+      "url": "https://app.notion.com/p/Midnighters-Blue-Noon-2b68a53c3854802fb77df9aaba20fec1",
+      "title": "Midnighters: Blue Noon",
+      "author": "Scott Westerfeld",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Science Fiction",
+        "Dystopian"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-802a-8f0f-da4ead7efd73",
+      "url": "https://app.notion.com/p/Midnighters-Touching-Darkness-2b68a53c3854802a8f0fda4ead7efd73",
+      "title": "Midnighters: Touching Darkness",
+      "author": "Scott Westerfield",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Science Fiction",
+        "Dystopian"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-809d-9cca-f48a9243914c",
+      "url": "https://app.notion.com/p/Midnighters-The-Secret-Hour-2b68a53c3854809d9ccaf48a9243914c",
+      "title": "Midnighters: The Secret Hour",
+      "author": "Scott Westerfeld",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Science Fiction",
+        "Dystopian"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-80b8-a299-eb357d0d728d",
+      "url": "https://app.notion.com/p/So-Yesterday-2b68a53c385480b8a299eb357d0d728d",
+      "title": "So Yesterday",
+      "author": "Scott Westerfield",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Science Fiction",
+        "Dystopian"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-8099-bc0b-fe8369b5a1a4",
+      "url": "https://app.notion.com/p/Extras-2b68a53c38548099bc0bfe8369b5a1a4",
+      "title": "Extras",
+      "author": "Scott Westerfield",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Science Fiction",
+        "Dystopian"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-80c0-a6f7-fe12191f4912",
+      "url": "https://app.notion.com/p/Specials-2b68a53c385480c0a6f7fe12191f4912",
+      "title": "Specials",
+      "author": "Scott Westerfield",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Science Fiction",
+        "Dystopian"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-80df-87aa-edfe43940988",
+      "url": "https://app.notion.com/p/Pretties-2b68a53c385480df87aaedfe43940988",
+      "title": "Pretties",
+      "author": "Scott Westerfeld",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Science Fiction",
+        "Dystopian"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-8007-95dc-fe40031be9cb",
+      "url": "https://app.notion.com/p/Uglies-2b68a53c3854800795dcfe40031be9cb",
+      "title": "Uglies",
+      "author": "Scott Westerfeld",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Science Fiction",
+        "Dystopian"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-80d5-b5df-da2c55b4f77b",
+      "url": "https://app.notion.com/p/The-Host-2b68a53c385480d5b5dfda2c55b4f77b",
+      "title": "The Host",
+      "author": "Stephenie Meyer",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-80ed-8f96-dbb72922ebb8",
+      "url": "https://app.notion.com/p/The-Blood-of-Olympus-2b68a53c385480ed8f96dbb72922ebb8",
+      "title": "The Blood of Olympus",
+      "author": "Rick Riordan",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-8042-a82f-ea7a57cbe8da",
+      "url": "https://app.notion.com/p/The-Lost-Hero-2b68a53c38548042a82fea7a57cbe8da",
+      "title": "The Lost Hero",
+      "author": "Rick Riordan",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Philosophy"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-8077-b683-e133b4da5420",
+      "url": "https://app.notion.com/p/The-Last-Olympian-2b68a53c38548077b683e133b4da5420",
+      "title": "The Last Olympian",
+      "author": "Rick Riordan",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Philosophy"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-8024-a979-e7d39f6e228f",
+      "url": "https://app.notion.com/p/The-House-of-Hades-2b68a53c38548024a979e7d39f6e228f",
+      "title": "The House of Hades",
+      "author": "Rick Riordan",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Philosophy"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-8026-99a2-cd9bb197eca0",
+      "url": "https://app.notion.com/p/The-Son-of-Neptune-2b68a53c3854802699a2cd9bb197eca0",
+      "title": "The Son of Neptune",
+      "author": "Rick Riordan",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Philosophy"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-804a-9578-e3a292727bf3",
+      "url": "https://app.notion.com/p/The-Mark-of-Athena-2b68a53c3854804a9578e3a292727bf3",
+      "title": "The Mark of Athena",
+      "author": "Rick Riordan",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Philosophy"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-802d-8e27-fbff656ac15a",
+      "url": "https://app.notion.com/p/The-Battle-of-the-Labyrinth-2b68a53c3854802d8e27fbff656ac15a",
+      "title": "The Battle of the Labyrinth",
+      "author": "Rick Riordan",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Philosophy"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-807a-9035-de0e53f9c916",
+      "url": "https://app.notion.com/p/The-Titan-s-Curse-2b68a53c3854807a9035de0e53f9c916",
+      "title": "The Titan’s Curse",
+      "author": "Rick Riordan",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Philosophy"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-80c7-ab52-cc05728b205a",
+      "url": "https://app.notion.com/p/The-Sea-of-Monsters-2b68a53c385480c7ab52cc05728b205a",
+      "title": "The Sea of Monsters",
+      "author": "Rick Riordan",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Philosophy"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-8001-93ba-faaabe632bdc",
+      "url": "https://app.notion.com/p/The-Lightning-Thief-2b68a53c3854800193bafaaabe632bdc",
+      "title": "The Lightning Thief",
+      "author": "Rick Riordan",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Philosophy"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-8098-9230-f823de6b8eba",
+      "url": "https://app.notion.com/p/The-Balad-of-Songbirds-and-Snakes-2b68a53c385480989230f823de6b8eba",
+      "title": "The Balad of Songbirds and Snakes",
+      "author": "Suzanne Collins",
+      "status": "DNF",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Science Fiction",
+        "Dystopian"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-809d-b409-cbe8811336e6",
+      "url": "https://app.notion.com/p/Harry-Potter-and-the-Deathly-Hallows-2b68a53c3854809db409cbe8811336e6",
+      "title": "Harry Potter and the Deathly Hallows",
+      "author": "Joanne Rowling",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2b68a53c-3854-803e-8716-c6d36e2361d7",
+      "url": "https://app.notion.com/p/Harry-Potter-and-the-Half-Blood-Prince-2b68a53c3854803e8716c6d36e2361d7",
+      "title": "Harry Potter and the Half-Blood Prince",
+      "author": "J.K. Rowling",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2b08a53c-3854-80a8-8557-c8eb71999294",
+      "url": "https://app.notion.com/p/Tale-of-the-Heart-Queen-2b08a53c385480a88557c8eb71999294",
+      "title": "Tale of the Heart Queen",
+      "author": "Nisha J. Tuli",
+      "status": "Read",
+      "number": 43,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "2af8a53c-3854-804e-b7c8-fea13f5286cb",
+      "url": "https://app.notion.com/p/Fate-of-the-Sun-King-Re-read-2af8a53c3854804eb7c8fea13f5286cb",
+      "title": "Fate of the Sun King (Re-read)",
+      "author": "Nisha Tuli",
+      "status": "Read",
+      "number": 42,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2af8a53c-3854-80d4-85ee-c6169535e7e7",
+      "url": "https://app.notion.com/p/Fearless-2af8a53c385480d485eec6169535e7e7",
+      "title": "Fearless",
+      "author": "Lauren Roberts",
+      "status": "Read",
+      "number": 41,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2af8a53c-3854-80b8-ade5-cbc400ee0606",
+      "url": "https://app.notion.com/p/Reckless-2af8a53c385480b8ade5cbc400ee0606",
+      "title": "Reckless",
+      "author": "Lauren Roberts",
+      "status": "Read",
+      "number": 40,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2928a53c-3854-80b3-ba09-db1eb6019edf",
+      "url": "https://app.notion.com/p/Frankenstein-2928a53c385480b3ba09db1eb6019edf",
+      "title": "Frankenstein",
+      "author": "Mary Shelley",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy",
+        "Classical Literature",
+        "Horror",
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": "27e8a53c-3854-803a-8930-cf58dd61ad3d",
+      "url": "https://app.notion.com/p/Powerless-27e8a53c3854803a8930cf58dd61ad3d",
+      "title": "Powerless",
+      "author": "Lauren Roberts",
+      "status": "Read",
+      "number": 34,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2708a53c-3854-8035-8c14-d22fd964c8de",
+      "url": "https://app.notion.com/p/Glow-of-the-Everflame-Re-read-2708a53c385480358c14d22fd964c8de",
+      "title": "Glow of the Everflame (Re-read)",
+      "author": "Penn Cole",
+      "status": "Read",
+      "number": 38,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "2708a53c-3854-8082-88a4-c7df12fd394c",
+      "url": "https://app.notion.com/p/Spark-of-the-Everflame-2708a53c3854808288a4c7df12fd394c",
+      "title": "Spark of the Everflame",
+      "author": "Penn Cole",
+      "status": "Read",
+      "number": 37,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2418a53c-3854-8055-bc43-c12c89b8af76",
+      "url": "https://app.notion.com/p/The-Happiness-Project-2418a53c38548055bc43c12c89b8af76",
+      "title": "The Happiness\nProject",
+      "author": "Gretchen Ruben",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Mindset & Attitude"
+      ]
+    },
+    {
+      "id": "2418a53c-3854-8014-88db-e8933159f25b",
+      "url": "https://app.notion.com/p/These-Twisted-Bonds-2418a53c3854801488dbe8933159f25b",
+      "title": "These Twisted Bonds",
+      "author": "Lexi Ryan",
+      "status": "DNF",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2408a53c-3854-80cb-a2e1-fdbd7b197fb7",
+      "url": "https://app.notion.com/p/Blood-Marked-Re-read-2408a53c385480cba2e1fdbd7b197fb7",
+      "title": "Blood Marked (Re-read)",
+      "author": "Tracy Deonn",
+      "status": "Read",
+      "number": 35,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "23f8a53c-3854-8076-8a2e-e8c17dc06820",
+      "url": "https://app.notion.com/p/A-Court-of-Mist-and-Fury-Re-read-23f8a53c385480768a2ee8c17dc06820",
+      "title": "A Court of Mist and Fury (Re-read)",
+      "author": "Sarah J. Maas",
+      "status": "DNF",
+      "number": 11,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "23f8a53c-3854-8085-adb7-c3d85a199543",
+      "url": "https://app.notion.com/p/A-Fate-Inked-in-Blood-23f8a53c38548085adb7c3d85a199543",
+      "title": "A Fate Inked in Blood",
+      "author": "Danielle L. Jensen",
+      "status": "Read",
+      "number": 20,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "23f8a53c-3854-80d0-9c93-eb5944363661",
+      "url": "https://app.notion.com/p/The-Serpent-and-the-Wings-of-Night-23f8a53c385480d09c93eb5944363661",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "status": "DNF",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "23e8a53c-3854-81d6-a197-d724da5da917",
+      "url": "https://app.notion.com/p/Daughter-of-Blood-and-Starlight-23e8a53c385481d6a197d724da5da917",
+      "title": "Daughter of Blood and Starlight",
+      "author": "Laini Taylor",
+      "status": "DNF",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "23c8a53c-3854-801d-b7ac-fe771d64e243",
+      "url": "https://app.notion.com/p/Legendborn-23c8a53c3854801db7acfe771d64e243",
+      "title": "Legendborn",
+      "author": "Tracy Deone",
+      "status": "Read",
+      "number": 34,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Fantasy",
+        "Romance",
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": "4e69c882-a8eb-4ceb-b15d-59981d800dba",
+      "url": "https://app.notion.com/p/Esperanza-Rising-4e69c882a8eb4cebb15d59981d800dba",
+      "title": "Esperanza Rising",
+      "author": "Pam Munoz Ryan",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Historical Fiction"
+      ]
+    },
+    {
+      "id": "2388a53c-3854-8097-8150-d62bbc61e8fd",
+      "url": "https://app.notion.com/p/Chain-of-Thorns-2388a53c385480978150d62bbc61e8fd",
+      "title": "Chain of Thorns",
+      "author": "Cassandra Clare",
+      "status": "Read",
+      "number": 33,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2388a53c-3854-80a4-9e25-c578ddcc58a0",
+      "url": "https://app.notion.com/p/Chain-of-Iron-2388a53c385480a49e25c578ddcc58a0",
+      "title": "Chain of Iron",
+      "author": "Cassandra Clare",
+      "status": "Read",
+      "number": 32,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2388a53c-3854-802e-b566-dc449432691b",
+      "url": "https://app.notion.com/p/Chain-of-Gold-2388a53c3854802eb566dc449432691b",
+      "title": "Chain of Gold",
+      "author": "Cassandra Clare",
+      "status": "Read",
+      "number": 31,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2238a53c-3854-80f7-8be7-f13b0a6cbfe3",
+      "url": "https://app.notion.com/p/Clockwork-Princess-2238a53c385480f78be7f13b0a6cbfe3",
+      "title": "Clockwork Princess",
+      "author": "Cassandra Clare",
+      "status": "Read",
+      "number": 30,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "2168a53c-3854-8060-9421-d605563fbfc9",
+      "url": "https://app.notion.com/p/Fate-of-the-Sun-King-2168a53c385480609421d605563fbfc9",
+      "title": "Fate of the Sun King",
+      "author": "Nisha Tuli",
+      "status": "Read",
+      "number": 21,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2168a53c-3854-80b5-8777-dba95564c24b",
+      "url": "https://app.notion.com/p/Clockwork-Prince-2168a53c385480b58777dba95564c24b",
+      "title": "Clockwork Prince",
+      "author": "Cassamdra Clare",
+      "status": "Read",
+      "number": 29,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2148a53c-3854-8028-9d0f-dbe0b61eeced",
+      "url": "https://app.notion.com/p/Lady-Midnight-Re-read-2148a53c385480289d0fdbe0b61eeced",
+      "title": "Lady Midnight (Re-read)",
+      "author": "Cassandra Clare",
+      "status": "Read",
+      "number": 28,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "2148a53c-3854-80b2-b87c-ee65ca3a2cc7",
+      "url": "https://app.notion.com/p/Clockwork-Angel-2148a53c385480b2b87cee65ca3a2cc7",
+      "title": "Clockwork Angel",
+      "author": "Cassandra Clare",
+      "status": "Read",
+      "number": 27,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2128a53c-3854-8010-8d71-c48a8686f68f",
+      "url": "https://app.notion.com/p/City-of-Heavenly-Fire-2128a53c385480108d71c48a8686f68f",
+      "title": "City of Heavenly Fire",
+      "author": "Cassandra Clare",
+      "status": "Read",
+      "number": 26,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2128a53c-3854-802a-a355-ed5e02948ea6",
+      "url": "https://app.notion.com/p/City-of-Lost-Souls-2128a53c3854802aa355ed5e02948ea6",
+      "title": "City of Lost Souls",
+      "author": "Cassandra Clare",
+      "status": "Read",
+      "number": 25,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "20b8a53c-3854-800e-bccc-e902aabede8a",
+      "url": "https://app.notion.com/p/Stiff-The-Curious-Lives-of-Human-Cadavers-20b8a53c3854800ebccce902aabede8a",
+      "title": "Stiff: The Curious Lives of Human Cadavers",
+      "author": "Mary Roach",
+      "status": "DNF",
+      "number": 9,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Medical"
+      ]
+    },
+    {
+      "id": "20b8a53c-3854-806d-a11d-e730111d8e50",
+      "url": "https://app.notion.com/p/Gulp-Adventures-on-the-Alimentary-Canal-20b8a53c3854806da11de730111d8e50",
+      "title": "Gulp: Adventures on the Alimentary Canal",
+      "author": "Mary Roach",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Medical",
+        "Science & Technology"
+      ]
+    },
+    {
+      "id": "e8eef995-568d-4d25-bd06-22ba9e844076",
+      "url": "https://app.notion.com/p/One-Dark-Window-e8eef995568d4d25bd0622ba9e844076",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "status": "Read",
+      "number": 8,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "20b8a53c-3854-80af-9944-cd6c70d928fc",
+      "url": "https://app.notion.com/p/The-Fault-in-Our-Stars-20b8a53c385480af9944cd6c70d928fc",
+      "title": "The Fault in Our Stars",
+      "author": "John Green",
+      "status": "DNF",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance"
+      ]
+    },
+    {
+      "id": "9c89e82f-23c1-44c7-b710-79eaa2fe0945",
+      "url": "https://app.notion.com/p/Insurgent-9c89e82f23c144c7b71079eaa2fe0945",
+      "title": "Insurgent",
+      "author": "Veronica Roth",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": "2068a53c-3854-80c8-b7cb-e9e0f7d768c4",
+      "url": "https://app.notion.com/p/City-of-Fallen-Angels-2068a53c385480c8b7cbe9e0f7d768c4",
+      "title": "City of Fallen Angels",
+      "author": "Cassandra Clare",
+      "status": "Read",
+      "number": 24,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2048a53c-3854-80df-9ba5-fb558a939fe2",
+      "url": "https://app.notion.com/p/How-Bad-Do-You-Want-It-Mastering-the-Psychology-of-Mind-over-Muscle-2048a53c385480df9ba5fb558a939fe2",
+      "title": "How Bad Do You Want It? Mastering the Psychology of Mind over Muscle",
+      "author": "Matt Fitzgerald",
+      "status": "DNF",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Health & Fitness"
+      ]
+    },
+    {
+      "id": "2048a53c-3854-800b-a7cd-c8011731c3a3",
+      "url": "https://app.notion.com/p/Is-Everyone-Else-Hanging-Out-without-Me-2048a53c3854800ba7cdc8011731c3a3",
+      "title": "Is Everyone Else Hanging Out without Me?",
+      "author": "Mindy Kahling",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Humor"
+      ]
+    },
+    {
+      "id": "2048a53c-3854-80cf-bf55-c36899912c1f",
+      "url": "https://app.notion.com/p/Mockingjay-2048a53c385480cfbf55c36899912c1f",
+      "title": "Mockingjay",
+      "author": "Suzanne Collins",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": "2048a53c-3854-8013-b7ce-d50f2b28945a",
+      "url": "https://app.notion.com/p/Catching-Fire-2048a53c38548013b7ced50f2b28945a",
+      "title": "Catching Fire",
+      "author": "Suzanne Collins",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": "2048a53c-3854-8027-b42d-c640291b572b",
+      "url": "https://app.notion.com/p/Breaking-Dawn-2048a53c38548027b42dc640291b572b",
+      "title": "Breaking Dawn",
+      "author": "Stephenie Meyer",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2048a53c-3854-80dc-ab78-f30328b26410",
+      "url": "https://app.notion.com/p/New-Moon-2048a53c385480dcab78f30328b26410",
+      "title": "New Moon",
+      "author": "Stephenie Meyer",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2048a53c-3854-80b7-8ef9-e2c48aa88132",
+      "url": "https://app.notion.com/p/Eclipse-2048a53c385480b78ef9e2c48aa88132",
+      "title": "Eclipse",
+      "author": "Stephanie Meyer",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2048a53c-3854-80eb-892a-e57a6dfd850a",
+      "url": "https://app.notion.com/p/Harry-Potter-and-the-Order-of-the-Phoenix-2048a53c385480eb892ae57a6dfd850a",
+      "title": "Harry Potter and the Order of the Phoenix",
+      "author": "J. K. Rowling",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2048a53c-3854-806f-8d00-c841f21b6f40",
+      "url": "https://app.notion.com/p/Harry-Potter-and-the-Goblet-of-Fire-2048a53c3854806f8d00c841f21b6f40",
+      "title": "Harry Potter and the Goblet of Fire",
+      "author": "J. K. Rowling",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2048a53c-3854-8073-b08a-f046ae46e866",
+      "url": "https://app.notion.com/p/Allegiant-2048a53c38548073b08af046ae46e866",
+      "title": "Allegiant",
+      "author": "Veronica Roth",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": "ed76c8a7-3d15-4895-bf23-83accd9700e8",
+      "url": "https://app.notion.com/p/Oathbound-ed76c8a73d154895bf2383accd9700e8",
+      "title": "Oathbound",
+      "author": "Tracy Deeonn",
+      "status": "Read",
+      "number": 36,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2048a53c-3854-80fa-b94b-c83c90ecdd8e",
+      "url": "https://app.notion.com/p/Fate-of-the-Sun-King-Re-read-2048a53c385480fab94bc83c90ecdd8e",
+      "title": "Fate of the Sun King (Re-read)",
+      "author": "Nisha Tuli",
+      "status": "Read",
+      "number": 23,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "2038a53c-3854-80c7-a88b-f560acf8e95b",
+      "url": "https://app.notion.com/p/City-of-Glass-2038a53c385480c7a88bf560acf8e95b",
+      "title": "City of Glass",
+      "author": "Cassandra Clare",
+      "status": "Read",
+      "number": 22,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2038a53c-3854-8012-857b-d734579cab6f",
+      "url": "https://app.notion.com/p/City-of-Ashes-2038a53c38548012857bd734579cab6f",
+      "title": "City of Ashes",
+      "author": "Cassandra Clare",
+      "status": "Read",
+      "number": 20,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2038a53c-3854-8078-b1f3-f92933dce68f",
+      "url": "https://app.notion.com/p/City-of-Bones-2038a53c38548078b1f3f92933dce68f",
+      "title": "City of Bones",
+      "author": "Cassandra Clare",
+      "status": "Read",
+      "number": 19,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2038a53c-3854-809c-9f62-caed66a78c86",
+      "url": "https://app.notion.com/p/Queen-of-Air-and-Darkness-2038a53c3854809c9f62caed66a78c86",
+      "title": "Queen of Air and Darkness",
+      "author": "Cassandra Clare",
+      "status": "Read",
+      "number": 18,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "2038a53c-3854-800a-8a7b-f4431898ba84",
+      "url": "https://app.notion.com/p/Lord-of-Shadows-2038a53c3854800a8a7bf4431898ba84",
+      "title": "Lord of Shadows",
+      "author": "Cassandra Clare",
+      "status": "Read",
+      "number": 17,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1ef8a53c-3854-8073-83a1-dd8510908e8c",
+      "url": "https://app.notion.com/p/Lady-Midnight-1ef8a53c3854807383a1dd8510908e8c",
+      "title": "Lady Midnight",
+      "author": "Cassandra Clare",
+      "status": "Read",
+      "number": 16,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1ef8a53c-3854-8025-8f65-f83c37ac0ec4",
+      "url": "https://app.notion.com/p/When-the-Moon-Hatched-1ef8a53c385480258f65f83c37ac0ec4",
+      "title": "When the Moon Hatched",
+      "author": "Sarah A. Parker",
+      "status": "Read",
+      "number": 15,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1e58a53c-3854-80d2-8854-dd1132ab70f0",
+      "url": "https://app.notion.com/p/Rule-of-the-Aurora-King-1e58a53c385480d28854dd1132ab70f0",
+      "title": "Rule of the Aurora King",
+      "author": "Nisha J. Tuli",
+      "status": "Read",
+      "number": 14,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1dc8a53c-3854-80ba-bf49-c8485a3e8864",
+      "url": "https://app.notion.com/p/The-Trial-of-the-Sun-Queen-1dc8a53c385480babf49c8485a3e8864",
+      "title": "The Trial of the Sun Queen",
+      "author": "Nisha J. Tuli",
+      "status": "Read",
+      "number": 13,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1dc8a53c-3854-802d-a69a-c0bf2c88de56",
+      "url": "https://app.notion.com/p/Vox-1dc8a53c3854802da69ac0bf2c88de56",
+      "title": "Vox",
+      "author": "Christina Dalcher",
+      "status": "Read",
+      "number": 12,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": "1dc8a53c-3854-8071-bb9c-d9696eec2b5d",
+      "url": "https://app.notion.com/p/Heat-of-the-Everflame-1dc8a53c38548071bb9cd9696eec2b5d",
+      "title": "Heat of the Everflame",
+      "author": "Penn Cole",
+      "status": "Read",
+      "number": 10,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1dc8a53c-3854-80c8-92a6-d046339a8eb1",
+      "url": "https://app.notion.com/p/Glow-of-the-Everflame-1dc8a53c385480c892a6d046339a8eb1",
+      "title": "Glow of the Everflame",
+      "author": "Penn Cole",
+      "status": "Read",
+      "number": 9,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1dc8a53c-3854-8013-8a8a-d1fbab275923",
+      "url": "https://app.notion.com/p/Gideon-the-Nineth-1dc8a53c385480138a8ad1fbab275923",
+      "title": "Gideon the Nineth",
+      "author": "Tamsyn Muir",
+      "status": "Read",
+      "number": 11,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Fantasy",
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": "1dc8a53c-3854-8037-af10-ea246ddc2eed",
+      "url": "https://app.notion.com/p/Spark-of-the-Everflame-1dc8a53c38548037af10ea246ddc2eed",
+      "title": "Spark of the Everflame",
+      "author": "Penn Cole",
+      "status": "Read",
+      "number": 8,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1af8a53c-3854-8011-acf2-c363b48e7d87",
+      "url": "https://app.notion.com/p/Onyx-Storm-Re-read-1af8a53c38548011acf2c363b48e7d87",
+      "title": "Onyx Storm (Re-read)",
+      "author": "Rebecca Yarros",
+      "status": "Read",
+      "number": 7,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1a38a53c-3854-804b-9cf6-c37ae3827269",
+      "url": "https://app.notion.com/p/Flamefall-Re-read-1a38a53c3854804b9cf6c37ae3827269",
+      "title": "Flamefall (Re-read)",
+      "author": "Rosaria Munda",
+      "status": "Read",
+      "number": 6,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1a38a53c-3854-8096-b54e-fff1d6af059f",
+      "url": "https://app.notion.com/p/Fourth-Wing-1a38a53c38548096b54efff1d6af059f",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "status": "Read",
+      "number": 4,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1a38a53c-3854-801f-a944-d221429abbf7",
+      "url": "https://app.notion.com/p/Dryad-Storm-1a38a53c3854801fa944d221429abbf7",
+      "title": "Dryad Storm",
+      "author": "Laurie Forest",
+      "status": "Read",
+      "number": 2,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1a38a53c-3854-80ad-8ef5-fdb25e8ef0fd",
+      "url": "https://app.notion.com/p/Red-Queen-Re-read-1a38a53c385480ad8ef5fdb25e8ef0fd",
+      "title": "Red Queen (Re-read)",
+      "author": "Victoria Aveyard",
+      "status": "Read",
+      "number": 1,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1a38a53c-3854-806c-a890-dfcefbdf1708",
+      "url": "https://app.notion.com/p/Fireborne-Re-read-1a38a53c3854806ca890dfcefbdf1708",
+      "title": "Fireborne (Re-read)",
+      "author": "Rosaria Munda",
+      "status": "Read",
+      "number": 5,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1a38a53c-3854-806a-aea0-e65e71dd7246",
+      "url": "https://app.notion.com/p/Onyx-Storm-1a38a53c3854806aaea0e65e71dd7246",
+      "title": "Onyx Storm",
+      "author": "Rebecca Yarros",
+      "status": "Read",
+      "number": 3,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1a38a53c-3854-80a7-8183-e583b5dd3e09",
+      "url": "https://app.notion.com/p/The-Gilded-Cage-1a38a53c385480a78183e583b5dd3e09",
+      "title": "The Gilded Cage",
+      "author": "Lynette Noni",
+      "status": "Read",
+      "number": 1,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "16c8a53c-3854-80d6-8403-f53bb9292b43",
+      "url": "https://app.notion.com/p/Broken-Throne-16c8a53c385480d68403f53bb9292b43",
+      "title": "Broken Throne",
+      "author": "Victoria Aveyard",
+      "status": "Read",
+      "number": 54,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "16c8a53c-3854-8089-a425-f86f1912726d",
+      "url": "https://app.notion.com/p/War-Storm-16c8a53c38548089a425f86f1912726d",
+      "title": "War Storm",
+      "author": "Victoria Aveyard",
+      "status": "Read",
+      "number": 53,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "16c8a53c-3854-80f9-aa0d-ceda764b35d3",
+      "url": "https://app.notion.com/p/Kings-Cage-16c8a53c385480f9aa0dceda764b35d3",
+      "title": "Kings Cage",
+      "author": "Victoria Aveyard",
+      "status": "Read",
+      "number": 52,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1578a53c-3854-80f7-a053-f5ee8cb6f7af",
+      "url": "https://app.notion.com/p/Crave-1578a53c385480f7a053f5ee8cb6f7af",
+      "title": "Crave",
+      "author": "Tracy Wolff",
+      "status": "DNF",
+      "number": 51,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "1578a53c-3854-8058-9f51-e1b65120d645",
+      "url": "https://app.notion.com/p/Glass-Sword-1578a53c385480589f51e1b65120d645",
+      "title": "Glass Sword",
+      "author": "Victoria Aveyard",
+      "status": "Read",
+      "number": 50,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1578a53c-3854-804d-b187-e06009456d67",
+      "url": "https://app.notion.com/p/Red-Queen-1578a53c3854804db187e06009456d67",
+      "title": "Red Queen",
+      "author": "Victoria Aveyard",
+      "status": "Read",
+      "number": 49,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1578a53c-3854-80db-a992-fb9905a87e69",
+      "url": "https://app.notion.com/p/Where-the-Dead-Wait-1578a53c385480dba992fb9905a87e69",
+      "title": "Where the Dead Wait",
+      "author": "Ally Wilkes",
+      "status": "DNF",
+      "number": 48,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Horror"
+      ]
+    },
+    {
+      "id": "1418a53c-3854-809b-a706-e245cdb86fdf",
+      "url": "https://app.notion.com/p/The-Last-Blood-Carver-1418a53c3854809ba706e245cdb86fdf",
+      "title": "The Last Blood Carver",
+      "author": "Vanessa Le",
+      "status": "Read",
+      "number": 46,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1418a53c-3854-8002-8729-f3e625fd8c3c",
+      "url": "https://app.notion.com/p/Forest-of-Ruin-1418a53c385480028729f3e625fd8c3c",
+      "title": "Forest of Ruin",
+      "author": "Kelly Armstrong",
+      "status": "Read",
+      "number": 45,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "13a8a53c-3854-806d-9e8b-fad90bf5de9d",
+      "url": "https://app.notion.com/p/Twilight-13a8a53c3854806d9e8bfad90bf5de9d",
+      "title": "Twilight",
+      "author": "Stephenie Meyer",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "13a8a53c-3854-8078-bead-f693f2ac836c",
+      "url": "https://app.notion.com/p/Divergent-13a8a53c38548078beadf693f2ac836c",
+      "title": "Divergent",
+      "author": "Veronica Roth",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": "13a8a53c-3854-80f8-ba1b-e67559f4f97b",
+      "url": "https://app.notion.com/p/The-Hunger-Games-13a8a53c385480f8ba1be67559f4f97b",
+      "title": "The Hunger Games",
+      "author": "Suzanne Collins",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": "13a8a53c-3854-80de-9f98-f7b82efb74f5",
+      "url": "https://app.notion.com/p/Harry-Potter-and-the-Philosopher-s-Stone-13a8a53c385480de9f98f7b82efb74f5",
+      "title": "Harry Potter and the Philosopher’s Stone",
+      "author": "J.K. Rowling",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "13a8a53c-3854-80c0-8c8d-f93578a3726d",
+      "url": "https://app.notion.com/p/Harry-Potter-and-the-Chamber-of-Secrets-13a8a53c385480c08c8df93578a3726d",
+      "title": "Harry Potter and the Chamber of Secrets",
+      "author": "J.K. Rowling",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "13a8a53c-3854-804a-ba9a-f532264d3f38",
+      "url": "https://app.notion.com/p/Harry-Potter-and-the-Prisoner-of-Azkaban-13a8a53c3854804aba9af532264d3f38",
+      "title": "Harry Potter and the Prisoner of Azkaban",
+      "author": "J. K. Rowling",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "13a8a53c-3854-8076-8645-e8cbaf41532c",
+      "url": "https://app.notion.com/p/The-Empire-of-Night-13a8a53c385480768645e8cbaf41532c",
+      "title": "The Empire of Night",
+      "author": "Kelley Armstrong",
+      "status": "Read",
+      "number": 44,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1398a53c-3854-80d4-9f53-ff12209f8fd1",
+      "url": "https://app.notion.com/p/The-Sea-of-Storms-1398a53c385480d49f53ff12209f8fd1",
+      "title": "The Sea of Storms",
+      "author": "Kelley Armstrong",
+      "status": "Read",
+      "number": 43,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1398a53c-3854-8095-9748-c447f9ad1be9",
+      "url": "https://app.notion.com/p/The-Whispering-Dark-1398a53c385480959748c447f9ad1be9",
+      "title": "The Whispering Dark",
+      "author": "Kelly Andrew",
+      "status": "Read",
+      "number": 42,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "12d8a53c-3854-80e6-ad70-ce727312edfa",
+      "url": "https://app.notion.com/p/Obsidian-Throne-12d8a53c385480e6ad70ce727312edfa",
+      "title": "Obsidian Throne",
+      "author": "Robin D. Mahle",
+      "status": "Read",
+      "number": 41,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "12d8a53c-3854-8046-b176-dabe19468b3f",
+      "url": "https://app.notion.com/p/Crimson-Kingdom-12d8a53c38548046b176dabe19468b3f",
+      "title": "Crimson Kingdom",
+      "author": "Robin D. Mahle, Elle Madison",
+      "status": "Read",
+      "number": 40,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "12d8a53c-3854-809d-93e3-f348e69061fa",
+      "url": "https://app.notion.com/p/Tarnished-Crown-12d8a53c3854809d93e3f348e69061fa",
+      "title": "Tarnished Crown",
+      "author": "Robin D. Mahle",
+      "status": "Read",
+      "number": 39,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1288a53c-3854-8064-8bd9-f995d20fdc4f",
+      "url": "https://app.notion.com/p/The-Scarlet-Princess-1288a53c385480648bd9f995d20fdc4f",
+      "title": "The Scarlet Princess",
+      "author": "Robin D. Mahle",
+      "status": "Read",
+      "number": 38,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1208a53c-3854-8028-8b61-db4a032a94c3",
+      "url": "https://app.notion.com/p/Immortal-Dark-1208a53c385480288b61db4a032a94c3",
+      "title": "Immortal Dark",
+      "author": "Tigest Girma",
+      "status": "DNF",
+      "number": 37,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1208a53c-3854-8004-b59d-df519df9c4c6",
+      "url": "https://app.notion.com/p/Iron-Flame-1208a53c38548004b59ddf519df9c4c6",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "status": "Read",
+      "number": 36,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "11d8a53c-3854-806e-aa44-fd3786831bab",
+      "url": "https://app.notion.com/p/Fourth-Wing-Re-read-11d8a53c3854806eaa44fd3786831bab",
+      "title": "Fourth Wing (Re-read)",
+      "author": "Rebecca Yarros",
+      "status": "Read",
+      "number": 35,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1178a53c-3854-80dd-ae3a-d0a82807a113",
+      "url": "https://app.notion.com/p/Kill-Anything-that-Moves-The-Real-American-War-in-Vietnam-1178a53c385480ddae3ad0a82807a113",
+      "title": "Kill Anything that Moves: The Real American War in Vietnam",
+      "author": "Nick Turse",
+      "status": "DNF",
+      "number": 6,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "History & Politics"
+      ]
+    },
+    {
+      "id": "1158a53c-3854-80f5-9b0c-c02219457178",
+      "url": "https://app.notion.com/p/These-Hollow-Vows-1158a53c385480f59b0cc02219457178",
+      "title": "These Hollow Vows",
+      "author": "Lexi Ryan",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "1158a53c-3854-80cc-99b7-fb1a1aabc5c0",
+      "url": "https://app.notion.com/p/Ruthless-Vows-1158a53c385480cc99b7fb1a1aabc5c0",
+      "title": "Ruthless Vows",
+      "author": "Rebecca Ross",
+      "status": "Read",
+      "number": 34,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1088a53c-3854-8059-8a64-d813c3882f1c",
+      "url": "https://app.notion.com/p/Unwind-1088a53c385480598a64d813c3882f1c",
+      "title": "Unwind",
+      "author": "Neal Shusterson",
+      "status": "Read",
+      "number": 32,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": "4c66e367-1fab-48ca-aaea-1eac7fa12ddb",
+      "url": "https://app.notion.com/p/Blood-and-Honey-4c66e3671fab48caaaea1eac7fa12ddb",
+      "title": "Blood and Honey",
+      "author": "Shelby Mahurin",
+      "status": "DNF",
+      "number": 31,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "1018a53c-3854-80f5-859a-f0e95e156daa",
+      "url": "https://app.notion.com/p/Serpent-and-Dove-1018a53c385480f5859af0e95e156daa",
+      "title": "Serpent and Dove",
+      "author": "Shelby Mahurin",
+      "status": "Read",
+      "number": 30,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "4c1ae1a6-571e-437a-a8b7-691d734bf651",
+      "url": "https://app.notion.com/p/The-Hawthorne-Legacy-4c1ae1a6571e437aa8b7691d734bf651",
+      "title": "The Hawthorne Legacy",
+      "author": "Jennifer Lynn Barnes",
+      "status": "DNF",
+      "number": 29,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance"
+      ]
+    },
+    {
+      "id": "c389460c-ec24-4360-929c-088ded351daf",
+      "url": "https://app.notion.com/p/Bossypants-c389460cec244360929c088ded351daf",
+      "title": "Bossypants",
+      "author": "Tina Fey",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Biography/Memoir",
+        "Humor"
+      ]
+    },
+    {
+      "id": "57eacf03-df58-49e3-be4c-606489960d44",
+      "url": "https://app.notion.com/p/The-Inheritance-Games-57eacf03df5849e3be4c606489960d44",
+      "title": "The Inheritance Games",
+      "author": "Jennifer Lynn Barnes",
+      "status": "Read",
+      "number": 28,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance"
+      ]
+    },
+    {
+      "id": "6e47f5a9-6640-4331-af73-21ca5c04d551",
+      "url": "https://app.notion.com/p/Bloodmarked-6e47f5a966404331af7321ca5c04d551",
+      "title": "Bloodmarked",
+      "author": "Tracy Deonne",
+      "status": "Read",
+      "number": 27,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "efa3c103-21bb-4e89-ad5a-36ab2064f096",
+      "url": "https://app.notion.com/p/Ascension-efa3c10321bb4e89ad5a36ab2064f096",
+      "title": "Ascension",
+      "author": "Nicholas Binge",
+      "status": "DNF",
+      "number": 25,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Horror",
+        "Science Fiction",
+        "Mystery & Thriller"
+      ]
+    },
+    {
+      "id": "1ac9e8b0-0eef-4642-a633-96f486b97075",
+      "url": "https://app.notion.com/p/Demon-Tide-1ac9e8b00eef4642a63396f486b97075",
+      "title": "Demon Tide",
+      "author": "Laurie Forest",
+      "status": "Read",
+      "number": 8,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "92e6cec5-ee32-4b4f-bd32-572a051fdb4a",
+      "url": "https://app.notion.com/p/The-Black-Witch-92e6cec5ee324b4fbd32572a051fdb4a",
+      "title": "The Black Witch",
+      "author": "Laurie Forest",
+      "status": "Read",
+      "number": 5,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "6095b990-2a27-46d0-82cd-78426206963d",
+      "url": "https://app.notion.com/p/Furysong-6095b9902a2746d082cd78426206963d",
+      "title": "Furysong",
+      "author": "Rosaria Munda",
+      "status": "Read",
+      "number": 21,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "f590601f-8633-4948-ac6c-98972173036a",
+      "url": "https://app.notion.com/p/Flamefall-f590601f86334948ac6c98972173036a",
+      "title": "Flamefall",
+      "author": "Rosaria Munda",
+      "status": "Read",
+      "number": 20,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "39066f52-5be0-4c76-a475-2d5d4fd8fa3c",
+      "url": "https://app.notion.com/p/Wandfasted-39066f525be04c76a4752d5d4fd8fa3c",
+      "title": "Wandfasted",
+      "author": "Laurie Forest",
+      "status": "DNF",
+      "number": 17,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "4abaf1a6-167f-40e9-84f6-bd248ac7d3cc",
+      "url": "https://app.notion.com/p/Divine-Rivals-4abaf1a6167f40e984f6bd248ac7d3cc",
+      "title": "Divine Rivals",
+      "author": "Rebecca Ross",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "45f8ef7a-44ed-412c-ae73-870f6c8209dd",
+      "url": "https://app.notion.com/p/The-Shadow-Wand-45f8ef7a44ed412cae73870f6c8209dd",
+      "title": "The Shadow Wand",
+      "author": "Laurie Forest",
+      "status": "Read",
+      "number": 7,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "7c6b2158-ce7d-4131-b6f3-f0f68b214d1c",
+      "url": "https://app.notion.com/p/Iron-Flower-7c6b2158ce7d4131b6f3f0f68b214d1c",
+      "title": "Iron Flower",
+      "author": "Laurie Forest",
+      "status": "Read",
+      "number": 6,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "ad928551-09f6-4a6f-930a-7c0fa1520006",
+      "url": "https://app.notion.com/p/House-of-Earth-and-Blood-ad92855109f64a6f930a7c0fa1520006",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "db913785-5538-4806-8f60-5a7b6c232747",
+      "url": "https://app.notion.com/p/House-of-Sky-and-Breath-db913785553848068f605a7b6c232747",
+      "title": "House of Sky and Breath",
+      "author": "Sarah J. Maas",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "f149504a-d468-4c73-9b01-b7f49b8e3b53",
+      "url": "https://app.notion.com/p/House-of-Flame-and-Shadow-f149504ad4684c739b01b7f49b8e3b53",
+      "title": "House of Flame and Shadow",
+      "author": "Sarah J. Maas",
+      "status": "Read",
+      "number": 4,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "18b11551-9af9-44ce-a761-d29a5f537792",
+      "url": "https://app.notion.com/p/Mindset-18b115519af944cea761d29a5f537792",
+      "title": "Mindset",
+      "author": "Carol Dweck",
+      "status": "Reading",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Mindset & Attitude"
+      ]
+    },
+    {
+      "id": "edb45400-86de-48c5-9762-ec425b716ee3",
+      "url": "https://app.notion.com/p/The-Blood-Gift-edb4540086de48c59762ec425b716ee3",
+      "title": "The Blood Gift",
+      "author": "N. E. Davenport",
+      "status": "Read",
+      "number": 24,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Science Fiction",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "a41e86a5-dd53-4a2c-8082-f8379b1d7853",
+      "url": "https://app.notion.com/p/The-Blood-Trials-a41e86a5dd534a2c8082f8379b1d7853",
+      "title": "The Blood Trials",
+      "author": "N. E. Davenport",
+      "status": "Read",
+      "number": 23,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Fantasy",
+        "Science Fiction",
+        "Romance"
+      ]
+    },
+    {
+      "id": "317108f6-bdf4-4a9e-abb7-7b70260ac162",
+      "url": "https://app.notion.com/p/Siege-and-Storm-317108f6bdf44a9eabb77b70260ac162",
+      "title": "Siege and Storm",
+      "author": "Leigh Bardugo",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "f36ac153-3187-4482-bf34-b94e0614e5ee",
+      "url": "https://app.notion.com/p/Ruin-and-Rising-f36ac15331874482bf34b94e0614e5ee",
+      "title": "Ruin and Rising",
+      "author": "Leigh Bardugo",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "4bd27b94-33bc-4b21-aef1-b594676cde09",
+      "url": "https://app.notion.com/p/Kingdom-of-Ash-4bd27b9433bc4b21aef1b594676cde09",
+      "title": "Kingdom of Ash",
+      "author": "Sarah J. Maas",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "f830529c-1c26-41e6-970e-8d15838a7b5f",
+      "url": "https://app.notion.com/p/Tower-of-Dawn-f830529c1c2641e6970e8d15838a7b5f",
+      "title": "Tower of Dawn",
+      "author": "Sarah J. Maas",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "3afaec87-958f-4543-a33e-edae686b1ed5",
+      "url": "https://app.notion.com/p/Heir-of-Fire-3afaec87958f4543a33eedae686b1ed5",
+      "title": "Heir of Fire",
+      "author": "Sarah J. Maas",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "708f19cd-5595-434a-bc01-35588ff82316",
+      "url": "https://app.notion.com/p/Legendborn-708f19cd5595434abc0135588ff82316",
+      "title": "Legendborn",
+      "author": "Tracy Deonne",
+      "status": "Read",
+      "number": 26,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "6f2ac6aa-6e8e-478a-971f-c1b738d312a4",
+      "url": "https://app.notion.com/p/Caraval-6f2ac6aa6e8e478a971fc1b738d312a4",
+      "title": "Caraval",
+      "author": "Stephanie Garber",
+      "status": "Read",
+      "number": 3,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "cb1e388d-88c6-489a-9665-bf63de3225f3",
+      "url": "https://app.notion.com/p/The-Woman-in-Me-cb1e388d88c6489a9665bf63de3225f3",
+      "title": "The Woman in Me",
+      "author": "Brittney Spears",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Biography/Memoir"
+      ]
+    },
+    {
+      "id": "2f9ed4c4-fee9-4378-b6dc-2cbe4203b856",
+      "url": "https://app.notion.com/p/The-Familiar-2f9ed4c4fee94378b6dc2cbe4203b856",
+      "title": "The Familiar",
+      "author": "Leigh Bardugo",
+      "status": "Read",
+      "number": 22,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "a749a8c7-fc95-4b28-a871-eef87fd65236",
+      "url": "https://app.notion.com/p/Queen-of-Shadows-a749a8c7fc954b28a871eef87fd65236",
+      "title": "Queen of Shadows",
+      "author": "Sarah J. Maas",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "37541d62-36dc-4b6e-b6ca-72b637d74c62",
+      "url": "https://app.notion.com/p/Fireborne-37541d6236dc4b6eb6ca72b637d74c62",
+      "title": "Fireborne",
+      "author": "Rosaria Munda",
+      "status": "Read",
+      "number": 19,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "a8708253-4645-4251-89e0-d95fc05a769c",
+      "url": "https://app.notion.com/p/Iron-Flame-Re-read-Re-read-a87082534645425189e0d95fc05a769c",
+      "title": "Iron Flame (Re-read) (Re-read)",
+      "author": "Rebecca Yarros",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "d8b78e40-2cf6-4773-a62d-fc0d910f3d02",
+      "url": "https://app.notion.com/p/A-Court-of-Silver-Flames-d8b78e402cf64773a62dfc0d910f3d02",
+      "title": "A Court of Silver Flames",
+      "author": "Sarah J. Maas",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "3c8a6f09-06e1-4360-9d1c-70dcf3cea4eb",
+      "url": "https://app.notion.com/p/A-Court-of-Frost-and-Starlight-3c8a6f0906e143609d1c70dcf3cea4eb",
+      "title": "A Court of Frost and Starlight",
+      "author": "Sarah J. Maas",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "f62cbe00-a771-4c88-b29b-126017217ce0",
+      "url": "https://app.notion.com/p/A-Court-of-Wings-and-Ruin-f62cbe00a7714c88b29b126017217ce0",
+      "title": "A Court of Wings and Ruin",
+      "author": "Sarah J. Maas",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "4c2eaf2b-5878-4944-96f4-0503b68f06ed",
+      "url": "https://app.notion.com/p/Fourth-Wing-4c2eaf2b5878494496f40503b68f06ed",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "fc503b61-a2dd-4e11-a950-2aa7a7aaddfe",
+      "url": "https://app.notion.com/p/A-Court-of-Mist-and-Fury-fc503b61a2dd4e11a9502aa7a7aaddfe",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "127da4f0-b777-4171-b961-8c6b6cf4374b",
+      "url": "https://app.notion.com/p/Rule-of-Wolves-127da4f0b7774171b9618c6b6cf4374b",
+      "title": "Rule of Wolves",
+      "author": "Leigh Bardugo",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "30ad6ccc-4db4-474b-92b2-765bf78924d5",
+      "url": "https://app.notion.com/p/King-of-Scars-30ad6ccc4db4474b92b2765bf78924d5",
+      "title": "King of Scars",
+      "author": "Leigh Bardugo",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "a65d0e53-bb69-48d8-9f3d-6cc08d614186",
+      "url": "https://app.notion.com/p/Hellbent-a65d0e53bb6948d89f3d6cc08d614186",
+      "title": "Hellbent",
+      "author": "Leigh Bardugo",
+      "status": "Read",
+      "number": 13,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Fantasy",
+        "Mystery & Thriller",
+        "Horror"
+      ]
+    },
+    {
+      "id": "24d09aeb-c9dc-4f59-9375-5e1f142d8b7d",
+      "url": "https://app.notion.com/p/The-Queen-of-Nothing-24d09aebc9dc4f5993755e1f142d8b7d",
+      "title": "The Queen of Nothing",
+      "author": "Holly Black",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "739172d7-f107-4569-884b-717d34e6cdaf",
+      "url": "https://app.notion.com/p/The-Wicked-King-739172d7f1074569884b717d34e6cdaf",
+      "title": "The Wicked King",
+      "author": "Holly Black",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "77a04cca-a603-4aef-aff1-c062a2647d6a",
+      "url": "https://app.notion.com/p/Crooked-Kingdom-Re-read-77a04ccaa6034aefaff1c062a2647d6a",
+      "title": "Crooked Kingdom (Re-read)",
+      "author": "Leigh Bardugo",
+      "status": "Read",
+      "number": 16,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "d2efa59e-3ca6-4e03-8a50-bf37739d80ab",
+      "url": "https://app.notion.com/p/Crown-of-Midnight-d2efa59e3ca64e038a50bf37739d80ab",
+      "title": "Crown of Midnight",
+      "author": "Sarah J. Maas",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "79eea7d0-0c12-4f2e-ace9-4e6659cbe6c7",
+      "url": "https://app.notion.com/p/The-Prison-Healer-79eea7d00c124f2eace94e6659cbe6c7",
+      "title": "The Prison Healer",
+      "author": "Lynnette Noni",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy",
+        "Romance"
+      ]
+    },
+    {
+      "id": "af8b7314-991e-46f2-ad02-5460210c627e",
+      "url": "https://app.notion.com/p/The-Blood-Traitor-af8b7314991e46f2ad025460210c627e",
+      "title": "The Blood Traitor",
+      "author": "Lynette Noni",
+      "status": "Read",
+      "number": 2,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "9435df20-2939-4927-8316-68d7638216fc",
+      "url": "https://app.notion.com/p/Witches-Steeped-in-Gold-9435df2029394927831668d7638216fc",
+      "title": "Witches Steeped in Gold",
+      "author": "Ciannon Smart",
+      "status": "DNF",
+      "number": 47,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "f5c67330-ebde-446a-9fa0-053b38866c1d",
+      "url": "https://app.notion.com/p/The-Prison-Healer-f5c67330ebde446a9fa0053b38866c1d",
+      "title": "The Prison Healer",
+      "author": "Lynette Noni",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "9616c40e-4705-4796-ad72-5dac15e67a84",
+      "url": "https://app.notion.com/p/The-Life-Changing-Magic-of-Tidying-Up-9616c40e47054796ad725dac15e67a84",
+      "title": "The Life Changing Magic of Tidying Up",
+      "author": "",
+      "status": "DNF",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Self Help & Productivity"
+      ]
+    },
+    {
+      "id": "453428fb-5773-404e-854d-881caaa43c19",
+      "url": "https://app.notion.com/p/The-Handmaid-s-Tale-453428fb5773404e854d881caaa43c19",
+      "title": "The Handmaid's Tale",
+      "author": "Margaret Attwood",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Science Fiction",
+        "Dystopian"
+      ]
+    },
+    {
+      "id": "35749408-0d2c-4efb-8674-a8a069eca4be",
+      "url": "https://app.notion.com/p/Shadow-and-Bone-357494080d2c4efb8674a8a069eca4be",
+      "title": "Shadow and Bone",
+      "author": "Leigh Bardugo",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "97ed3c04-f8bc-46f6-bce4-f78ccb2a81d6",
+      "url": "https://app.notion.com/p/Grunt-The-Curious-Science-of-Humans-at-War-97ed3c04f8bc46f6bce4f78ccb2a81d6",
+      "title": "Grunt: The Curious Science of Humans at War",
+      "author": "Mary Roach",
+      "status": "Reading",
+      "number": 34,
+      "yearId": "2ea8a53c-3854-80d0-86d1-eb9ffd1352ae",
+      "year": "2026",
+      "genres": [
+        "History & Politics",
+        "Humor",
+        "Science & Technology"
+      ]
+    },
+    {
+      "id": "023e5052-7677-439e-8f16-e6139af8dcae",
+      "url": "https://app.notion.com/p/Can-t-Hurt-Me-023e50527677439e8f16e6139af8dcae",
+      "title": "Can’t Hurt Me",
+      "author": "David Goggins",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Biography/Memoir",
+        "Mindset & Attitude"
+      ]
+    },
+    {
+      "id": "92a15a3f-dae8-4986-acad-af79e18232c0",
+      "url": "https://app.notion.com/p/The-Knife-of-Never-Letting-Go-92a15a3fdae84986acadaf79e18232c0",
+      "title": "The Knife of Never Letting Go",
+      "author": "Patrick Ness",
+      "status": "DNF",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Science Fiction",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "63e6addc-d931-4d32-97c3-aa79f36c330a",
+      "url": "https://app.notion.com/p/American-Gods-63e6addcd9314d3297c3aa79f36c330a",
+      "title": "American Gods",
+      "author": "Neil Gaimen",
+      "status": "DNF",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Fantasy",
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": "b421c7df-2fe8-4731-a04e-563861a48965",
+      "url": "https://app.notion.com/p/48-Laws-of-Power-b421c7df2fe84731a04e563861a48965",
+      "title": "48 Laws of Power",
+      "author": "Robert Greene",
+      "status": "DNF",
+      "number": 44,
+      "yearId": "2598a53c-3854-8030-bb72-c89d0248ea2e",
+      "year": "2025",
+      "genres": [
+        "Communication"
+      ]
+    },
+    {
+      "id": "05cd41c2-16f7-4dad-bd7e-f502913a4e99",
+      "url": "https://app.notion.com/p/I-m-Glad-My-Mom-Died-05cd41c216f74dadbd7ef502913a4e99",
+      "title": "I’m Glad My Mom Died",
+      "author": "The author of the book titled \"I’m Glad My Mom Died\" is Jennette McCurdy.",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "db106875-bae7-4e65-aeb4-f1e17516bbae",
+      "url": "https://app.notion.com/p/Nineth-House-db106875bae74e65aeb4f1e17516bbae",
+      "title": "Nineth House",
+      "author": "Leigh Bardugo",
+      "status": "Read",
+      "number": 12,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Fantasy",
+        "Mystery & Thriller",
+        "Horror"
+      ]
+    },
+    {
+      "id": "ffe39bad-b395-4389-a59f-13d1857518ab",
+      "url": "https://app.notion.com/p/Wolf-Boys-ffe39badb3954389a59f13d1857518ab",
+      "title": "Wolf Boys",
+      "author": "Dan Slater",
+      "status": "DNF",
+      "number": 18,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Biography/Memoir",
+        "True Crime"
+      ]
+    },
+    {
+      "id": "df68d98b-461b-4640-bb6e-b2084faddff9",
+      "url": "https://app.notion.com/p/A-Court-of-Thorns-and-Roses-df68d98b461b4640bb6eb2084faddff9",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "39e70635-ff5c-4b8b-8c5a-e7934dbe84fb",
+      "url": "https://app.notion.com/p/The-Cruel-Prince-39e70635ff5c4b8b8c5ae7934dbe84fb",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "438b9d2b-ea81-4fd3-a7df-f7d8916f0f81",
+      "url": "https://app.notion.com/p/Six-of-Crows-438b9d2bea814fd3a7dff7d8916f0f81",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "status": "Read",
+      "number": 10,
+      "yearId": "2598a53c-3854-809c-98c8-cfd315f6b1a8",
+      "year": "2024",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    },
+    {
+      "id": "e0788f6e-8688-4c8f-bfdb-1956e7ed9b79",
+      "url": "https://app.notion.com/p/Throne-of-Glass-e0788f6e86884c8fbfdb1956e7ed9b79",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "status": "Read",
+      "number": null,
+      "yearId": "2598a53c-3854-806d-9c47-fa0691f4bde1",
+      "year": "< 2023",
+      "genres": [
+        "Romance",
+        "Fantasy"
+      ]
+    }
+  ]
+};
+(() => {
+  const palette=['#5e9fe8','#eac26b','#72bc8f','#bf8eda','#de9255','#df84a8','#4fb9c9','#e97366','#8f8f8c','#b4b4b0'];
+  const yearOrder=['2026','2025','2024','< 2023'];
+  const yearMap=new Map(DATA.years.map(y=>[y.label,y]));
+  const buttons=document.getElementById('years');
+  const segments=document.getElementById('segments');
+  const legend=document.getElementById('legend');
+  const list=document.getElementById('list');
+  const radius=46, circumference=2*Math.PI*radius;
+  function labelForYear(label){return label}
+  function render(label){
+    const year=yearMap.get(label); if(!year)return;
+    [...buttons.children].forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.year===label)));
+    const books=DATA.books.filter(b=>b.year===label).sort((a,b)=>{
+      const av=a.number??9999,bv=b.number??9999;
+      return label==='2026'?bv-av:av-bv;
+    });
+    const counts=new Map();
+    books.forEach(book=>book.genres.forEach(g=>counts.set(g,(counts.get(g)||0)+1)));
+    const genreRows=[...counts.entries()].sort((a,b)=>b[1]-a[1]);
+    const total=genreRows.reduce((sum,row)=>sum+row[1],0)||1;
+    segments.innerHTML=''; legend.innerHTML='';
+    let offset=0;
+    genreRows.forEach(([name,value],i)=>{
+      const length=value/total*circumference;
+      const circle=document.createElementNS('http://www.w3.org/2000/svg','circle');
+      circle.setAttribute('class','segment'); circle.setAttribute('cx','60'); circle.setAttribute('cy','60'); circle.setAttribute('r',String(radius));
+      circle.setAttribute('stroke',palette[i%palette.length]); circle.setAttribute('stroke-dasharray',`${length} ${circumference-length}`); circle.setAttribute('stroke-dashoffset',String(-offset));
+      const title=document.createElementNS('http://www.w3.org/2000/svg','title'); title.textContent=`${name}: ${value}`; circle.appendChild(title); segments.appendChild(circle); offset+=length;
+      const row=document.createElement('div'); row.className='legend-row'; row.innerHTML=`<span class="dot" style="background:${palette[i%palette.length]}"></span><span class="legend-name" title="${escapeHtml(name)}">${escapeHtml(name)}</span><span class="legend-value">${value}</span>`; legend.appendChild(row);
+    });
+    const percent=year.goal?Math.round(year.read/year.goal*100):0;
+    document.getElementById('progress-percent').textContent=`${percent}% complete`;
+    document.getElementById('progress-summary-label').textContent=`${year.read} of ${year.goal} books`;
+    document.getElementById('progress-fill').style.width=`${Math.min(100,Math.max(0,percent))}%`;
+    document.getElementById('progress-bar').setAttribute('aria-label',`Reading goal progress: ${percent}%`);
+    document.getElementById('progress').textContent=`${year.read}/${year.goal}`;
+    document.getElementById('progress-label').textContent='books read';
+    document.getElementById('chart-desc').textContent=`${labelForYear(label)}: ${year.read} of ${year.goal} books read. Genre breakdown: ${genreRows.map(x=>x.join(' ')).join(', ')}.`;
+    document.getElementById('list-title').textContent=`${labelForYear(label)} Read List`;
+    document.getElementById('book-count').textContent=`${books.length} titles`;
+    list.innerHTML='';
+    if(!books.length){list.innerHTML='<div class="empty">No titles for this year.</div>';return;}
+    books.forEach(book=>{
+      const row=document.createElement('article'); row.className='row';
+      const number=book.number??'—'; const meta=[book.author,book.genres.join(' · ')].filter(Boolean).join(' · ');
+      row.innerHTML=`<div class="num">${escapeHtml(String(number))}</div><a class="row-link" href="${book.url}" target="_blank" rel="noopener"><div class="book-title">${escapeHtml(book.title)}</div><div class="book-meta">${escapeHtml(meta)}</div></a>`;
+      list.appendChild(row);
+    });
+  }
+  function escapeHtml(value){return value.replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));}
+  yearOrder.filter(y=>yearMap.has(y)).forEach(label=>{const btn=document.createElement('button');btn.className='year-btn';btn.type='button';btn.dataset.year=label;btn.textContent=labelForYear(label);btn.setAttribute('aria-pressed','false');btn.addEventListener('click',()=>render(label));buttons.appendChild(btn)});
+  render(yearMap.has('2026')?'2026':yearOrder.find(y=>yearMap.has(y)));
+})();
+</script>
+</body>
+</html>
